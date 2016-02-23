@@ -1,34 +1,27 @@
-from flask import Flask, render_template, request
+from flask import Flask, flash, redirect, render_template, \
+    request, url_for
 
 app = Flask(__name__)
+app.secret_key = '\x7f\x9c\x04\x9c\x01\x8f\x13vd\xd9\xe2s\xf6xo\x02\xde\x0et\xd3\xb4B\xbdO'
 
 
 @app.route('/')
 def index():
-    return 'Index Page!'
+    return render_template('index.html')
 
 
-@app.route('/hello/')
-@app.route('/hello/<name>')
-def hello(name=None):
-    return render_template('hello.html',name=name)
-
-@app.route('/user/<username>')
-def show_user_profile(username):
-    return 'User %s' % username
-
-
-@app.route('/post/<int:post_id>')
-def show_post(post_id):
-    return 'Post %d' % post_id
-
-#
-# @app.route('/login', methods=['POST','GET'])
-# def login():
-#     error = None
-#     if request.method=='POST':
-#         if valid_login
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        if request.form['username'] != 'admin' or \
+                        request.form['password'] != 'secret':
+            error = 'Invalid credentials'
+        else:
+            flash('You were successfully logged in')
+            return redirect(url_for('index'))
+    return render_template('login.html', error=error)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
