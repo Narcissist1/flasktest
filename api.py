@@ -7,7 +7,7 @@ api = Api(app)
 
 class HelloWorld(Resource):
     def get(self):
-        return {'content': 'content change test'}
+        return {'content': 'Wang xiao le biu~'}
 
 
 api.add_resource(HelloWorld, '/')
